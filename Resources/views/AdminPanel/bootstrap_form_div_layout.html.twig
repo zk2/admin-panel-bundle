@@ -1,0 +1,172 @@
+{% extends 'BraincraftedBootstrapBundle:Form:bootstrap.html.twig' %}
+
+{% block zk_date_time_bootstramp_widget %}
+    {% spaceless %}
+    {% if ZkDateTimeSetting['filter'] %}
+	<div class="input-group-sm zk-child-filter" id="{{ id }}_dt" data-date-format="{{ ZkDateTimeSetting['dateFormat'] }}">
+	    {{ block('form_widget_simple') }}
+            <span class="input-group-addon zk_addon"><span class="glyphicon glyphicon-calendar"></span></span>
+	</div>
+    {% else %}
+    <div>
+        <div class="input-group date" id="{{ id }}_dt" data-date-format="{{ ZkDateTimeSetting['dateFormat'] }}">
+            {{ block('form_widget_simple') }}
+            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+	</div>
+    </div>
+    {% endif %}
+    <script type="text/javascript">
+        $(function(){
+	    $( "#{{ id }}_dt" ).datetimepicker({
+                pickDate: {{ ZkDateTimeSetting['pickDate'] }},                     //en/disables the date picker
+                pickTime: {{ ZkDateTimeSetting['pickTime'] }},                     //en/disables the time picker
+                useMinutes: {{ ZkDateTimeSetting['useMinutes'] }},                 //en/disables the minutes picker
+                useSeconds: {{ ZkDateTimeSetting['useSeconds'] }},                 //en/disables the seconds picker
+                useCurrent: {{ ZkDateTimeSetting['useCurrent'] }},                 //when true, picker will set the value to the current date/time
+                minuteStepping: {{ ZkDateTimeSetting['minuteStepping']|raw }},     //set the minute stepping
+                minDate: {{ ZkDateTimeSetting['minDate']|raw }},                   //set a minimum date
+                maxDate: {{ ZkDateTimeSetting['maxDate']|raw }},                   //set a maximum date
+                showToday: {{ ZkDateTimeSetting['showToday'] }},                   //shows the today indicator
+                language: 'ru',                                                    //sets language locale
+                defaultDate: {{ ZkDateTimeSetting['defaultDate']|raw }},           //sets a default date, accepts js dates, strings and moment objects
+                disabledDates: {{ ZkDateTimeSetting['disabledDates']|raw }},       //an array of dates that cannot be selected
+                enabledDates: {{ ZkDateTimeSetting['enabledDates']|raw }},         //an array of dates that can be selected
+                useStrict: {{ ZkDateTimeSetting['useStrict'] }},                   //use "strict" when validating dates
+                sideBySide: {{ ZkDateTimeSetting['sideBySide'] }},                 //show the date and time picker side by side
+                daysOfWeekDisabled: {{ ZkDateTimeSetting['daysOfWeekDisabled']|raw }}, //for example use daysOfWeekDisabled: [0,6] to disable weekends
+	    });
+        });
+    </script>
+    {% endspaceless %}
+{% endblock %}
+
+{% block zk_date_bootstramp_widget %}
+    {% spaceless %}
+    {% if ZkDateSetting['filter'] %}
+	<div class="input-group-sm date zk-child-filter" id="{{ id }}_d">
+	    {{ block('form_widget_simple') }}
+            <span style="cursor:pointer;margin-left:-31px;margin-right:58px;" class="input-group-addon zk_addon">
+		<span class="glyphicon glyphicon-calendar"></span>
+	    </span>
+	</div>
+    {% else %}
+    <div>
+        <div class="input-group date" id="{{ id }}_d">
+            {{ block('form_widget_simple') }}
+            <span style="cursor:pointer" class="input-group-addon">
+		<span class="glyphicon glyphicon-calendar"></span>
+	    </span>
+	</div>
+    </div>
+    {% endif %}
+    <script type="text/javascript">
+        $(function(){
+	    $( "#{{ id }}_d" ).datepicker({
+                autoclose          : {{ ZkDateSetting['autoclose'] }},
+                beforeShowDay      : {{ ZkDateSetting['beforeShowDay'] }},
+                calendarWeeks      : {{ ZkDateSetting['calendarWeeks'] }},
+                clearBtn           : {{ ZkDateSetting['clearBtn'] }},
+                daysOfWeekDisabled : {{ ZkDateSetting['daysOfWeekDisabled'] }},
+                endDate            : {{ ZkDateSetting['endDate']|raw }},
+                forceParse         : {{ ZkDateSetting['forceParse'] }},
+                format             : {{ ZkDateSetting['format']|raw }},
+                keyboardNavigation : {{ ZkDateSetting['keyboardNavigation'] }},
+                language           : 'ru',
+                minViewMode        : {{ ZkDateSetting['minViewMode'] }},
+                multidate          : {{ ZkDateSetting['multidate'] }},
+                multidateSeparator : {{ ZkDateSetting['multidateSeparator']|raw }},
+                orientation        : {{ ZkDateSetting['orientation']|raw }},
+                rtl                : {{ ZkDateSetting['rtl'] }},
+                startDate          : {{ ZkDateSetting['startDate']|raw }},
+                startView          : {{ ZkDateSetting['startView'] }},
+                todayBtn           : {{ ZkDateSetting['todayBtn'] }},
+                todayHighlight     : {{ ZkDateSetting['todayHighlight'] }},
+                weekStart          : {{ ZkDateSetting['weekStart'] }}
+	    });
+        });
+    </script>
+    {% endspaceless %}
+{% endblock %}
+
+{% block zk_multi_select_widget %}
+    {% spaceless %}
+    <script type="text/javascript">
+      $(function(){
+        $( "#{{ id }}" )
+            .ZkMultiSelectWidget({
+                ZkHeight: {{ ZkHeight }},
+                ZkWidth:  {{ ZkWidth }},
+                ZkSearch: {{ ZkSearch }},
+                ZkRange:  {{ ZkRange }},
+	        ZkDescr:  {{ ZkDescr|raw }},
+	        ZkOptionsDisabled: {{ ZkOptionsDisabled|raw }}
+            });
+     });
+    </script>
+    {{ block('choice_widget_collapsed') }}
+    {% endspaceless %}
+{% endblock %}
+
+{% block text_filter_widget %}
+    {% spaceless %}
+        <div class="zk-field-filter">
+        {% for child in form %}
+	    <div class="input-group-sm zk-child-filter">
+		{{ form_widget(child) }}
+	    </div>
+        {% endfor %}
+	</div>
+    {% endspaceless %}
+{% endblock %}
+
+{% block choice_filter_widget %}
+    {% spaceless %}
+        <div class="zk-field-filter">
+        {% for child in form %}
+	    <div class="input-group-sm zk-child-filter">
+		{{ form_widget(child) }}
+	    </div>
+        {% endfor %}
+	</div>
+    {% endspaceless %}
+{% endblock %}
+
+{% block boolean_filter_widget %}
+    {% spaceless %}
+        <div class="zk-field-filter">
+        {% for child in form %}
+	    <div class="input-group-sm zk-child-filter">
+		{{ form_widget(child) }}
+	    </div>
+        {% endfor %}
+	</div>
+    {% endspaceless %}
+{% endblock %}
+
+{% block date_filter_widget %}
+    {% spaceless %}
+        <div class="zk-field-filter">
+        {% for child in form %}
+	    {% if child.vars.attr.class matches '{sf_filter_condition}'%}
+	    <div class="input-group-sm zk-child-filter">
+		{{ form_widget(child) }}
+	    </div>
+	    {% else %}
+	        {{ form_widget(child) }}
+	    {% endif %}
+        {% endfor %}
+	</div>
+    {% endspaceless %}
+{% endblock %}
+
+{% block entity_filter_widget %}
+    {% spaceless %}
+        <div class="zk-field-filter">
+        {% for child in form %}
+	    <div class="input-group-sm zk-child-filter">
+		{{ form_widget(child) }}
+	    </div>
+        {% endfor %}
+	</div>
+    {% endspaceless %}
+{% endblock %}

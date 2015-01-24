@@ -1,0 +1,11 @@
+zk_model_list:
+    pattern:  /model/list
+    defaults: { _controller: ZkAdminPanelBundle:Model:list }
+
+zk_model_edit:
+    pattern:  /model/{id}/edit
+    defaults: { _controller: ZkAdminPanelBundle:Model:edit }
+
+zk_brand_edit:
+    pattern:  /brand/{id}/edit
+    defaults: { _controller: ZkAdminPanelBundle:Model:editBrand }

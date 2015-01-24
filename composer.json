@@ -1,0 +1,27 @@
+{
+    "name": "zk2/admin-panel-bundle",
+    "description": "Generate admin view",
+    "version" : "1.0.0",
+    "type" : "symfony-bundle",
+    "homepage": "https://github.com/zk2/AdminPanelBundle",
+    "license": "MIT",
+    "keywords" : ["admin panel", "content manager"],
+    "authors": [
+        {
+            "name": "Evgeniy Budanov",
+            "email": "budanov.ua@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3",
+        "symfony/symfony": ">=2.1"
+    },
+    "autoload": {
+        "psr-4": { "Zk2\\AdminPanelBundle\\": "" }
+    },
+    "extra" : {
+        "branch-alias" : {
+            "dev-master" : "1.0.x-dev"
+        }
+    }
+}

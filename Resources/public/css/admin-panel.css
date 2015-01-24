@@ -1,0 +1,101 @@
+a,a:focus,a:hover{outline:none;}
+#admin-filter{
+    position: relative;
+}
+#admin-filter .zk-intetface-navbar{
+    margin: 0;
+    background: #006B45;
+    min-height: 30px;
+    text-align:center;
+}
+#admin-filter .zk-intetface-navbar-brand{
+    text-align:center;
+    width:100%;
+    color: #E0DEDE;
+    padding: 8px 0;
+}
+#admin-filter .zk-intetface-navbar-brand:hover{
+    text-decoration: underline;
+    color: white;
+}
+#admin-filter .zk-field-filter{
+    
+}
+#admin-filter .zk-child-filter{
+    display: inline-block;
+}
+#admin-filter .zk-child-filter input,
+#admin-filter .zk-child-filter select{
+    font-size: 10px;
+    height: 20px;
+    line-height: 1.5;
+    padding: 3px;
+    margin-top: 5px;
+}
+#admin-filter .sf_filter_value{
+    max-width: 180px;
+    width: 180px
+}
+#admin-filter .zk-filter-img{
+    cursor: pointer;
+    margin-left: 3px;
+}
+#admin-filter .filter_tr label{
+    margin-bottom: 0;
+    color: #006B45;
+}
+#admin-filter .sf_filter_condition_pattern,
+#admin-filter .sf_filter_condition_operator{
+    max-width: 80px;
+    width: 80px;
+}
+#admin-filter .filter_tr td{
+    border: none;
+}
+#admin-filter .zk_addon{
+    width: 20px;
+    height: 20px;
+    margin-right: 25px;
+    margin-top: 5px;
+    padding:0;
+    cursor: pointer;
+    float: right;
+}
+/*--------------------*/
+#admin-list-table{
+    background: white;
+}
+#admin-list-table > tbody > tr:hover > td {
+    background-color: #E8FCF2;
+}
+#admin-list-table th {
+    background-color: #3D3D3D;
+}
+#admin-list-table th .sortable,
+#admin-list-table .th_paginator_free{
+    color: #E0E0E0;
+}
+#admin-list-table .sorted a,
+#admin-list-table .white,
+#admin-list-table .white a{
+  color: white;
+}
+#admin-list-table .pagination {
+    margin: 0 auto;
+    margin-top: 5px;
+    padding: 0;
+}
+#admin-list-table .pagination > .active > a, .pagination > .active > span,
+#admin-list-table .pagination > .active > a:hover,
+#admin-list-table .pagination > .active > span:hover,
+#admin-list-table .pagination > .active > a:focus,
+#admin-list-table .pagination > .active > span:focus {
+    background-color: #006B45;
+    border-color: #006B45;
+}
+/*------*/
+#admin-form .tab-content{
+    padding: 30px 0;
+}
+
+

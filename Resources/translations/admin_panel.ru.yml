@@ -1,0 +1,11 @@
+paginator:
+    results: "результат|результата|результатов"
+    items: "страница|страницы|страниц"
+    firstPageText: Первая страница
+    previousPageText: Предыдущая страница
+    nextPageText: Следующая страница
+    lastPageText: Последняя страница
+    
+filter:
+    filter: Фильтр
+    reset: Сброс

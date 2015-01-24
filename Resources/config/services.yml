@@ -1,0 +1,49 @@
+services:
+
+    zk_admin_panel.twig_extension:     
+        class:        Zk\AdminPanelBundle\Twig\Extension\AdminPanelExtension
+        arguments:    [@service_container]     
+        tags:       
+            -  { name: twig.extension }
+
+    zk_admin_panel.form.type.text_filter:     
+        class:  Zk\AdminPanelBundle\AdminPanel\Form\Type\TextFilterType
+        tags:
+            - { name: form.type, alias: text_filter }
+
+    zk_admin_panel.form.type.boolean_filter:     
+        class:  Zk\AdminPanelBundle\AdminPanel\Form\Type\BooleanFilterType
+        tags:
+            - { name: form.type, alias: boolean_filter }
+
+    zk_admin_panel.form.type.entity_filter:     
+        class:  Zk\AdminPanelBundle\AdminPanel\Form\Type\EntityFilterType
+        tags:
+            - { name: form.type, alias: entity_filter }
+
+    zk_admin_panel.form.type.date_filter:     
+        class:  Zk\AdminPanelBundle\AdminPanel\Form\Type\DateFilterType
+        tags:
+            - { name: form.type, alias: date_filter }
+
+    zk_admin_panel.form.type.choice_filter:     
+        class:  Zk\AdminPanelBundle\AdminPanel\Form\Type\ChoiceFilterType
+        tags:
+            - { name: form.type, alias: choice_filter }
+
+    zk_interface.form.type.zk_date_time_bootstramp:     
+        class:  Zk\AdminPanelBundle\AdminPanel\Form\Type\DateTimeBootstrampType
+        tags:
+            - { name: form.type, alias: zk_date_time_bootstramp }
+
+    zk_interface.form.type.zk_date_bootstramp:     
+        class:  Zk\AdminPanelBundle\AdminPanel\Form\Type\DateBootstrampType
+        tags:
+            - { name: form.type, alias: zk_date_bootstramp }
+
+    zk_admin_panel.query_builder:
+        class:        Zk\AdminPanelBundle\AdminPanel\QueryBuilder
+
+    zk_admin_panel.form_filter_session:
+        class:        Zk\AdminPanelBundle\AdminPanel\FormFilterSession
+        arguments:    [@service_container]     

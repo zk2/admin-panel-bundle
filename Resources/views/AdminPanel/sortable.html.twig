@@ -1,0 +1,3 @@
+<a{% for attr, value in options %} {{ attr }}="{{ value }}"{% endfor %}>{{ title }}</a>
+{% if options['class'] == 'asc' %}<span class="glyphicon glyphicon-arrow-down white"></span>{% endif %}
+{% if options['class'] == 'desc' %}<span class="glyphicon glyphicon-arrow-up white"></span>{% endif %}

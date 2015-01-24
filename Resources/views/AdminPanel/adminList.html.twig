@@ -1,0 +1,100 @@
+<table id="admin-list-table" class="table table-striped table-condensed table-hover table-bordered">
+<thead>
+<tr>
+{% for item in items %}
+    {% if item.sort %}
+        <th{% if results.pagination.isSorted(item.aliasAndName) %} class="sorted"{% endif %}  {% if item.getOption('style') %} style="{{ item.getOption('style') }}"{% endif %}>
+            {{ knp_pagination_sortable(results.pagination, item.label, item.aliasAndName) }}
+        </th>
+    {% elseif item.getOption('gr_checkbox') %}
+        <th><input data-gr_main="1" type="checkbox" id="{{ item.getOption('gr_checkbox') }}" class="gr_oper {{ item.getOption('gr_checkbox') }}"></th>
+    {% else %}
+        <th class="th_paginator_free"  {% if item.getOption('style') %} style="{{ item.getOption('style') }}"{% endif %}>{{ item.label }}</th>
+    {% endif %}
+{% endfor %}
+</tr>
+</thead>
+{# table body #}
+{% for result in results.pagination %}
+<tr>
+    {% for item in items %}
+        
+        {% set value = item.method ? attribute(result, item.method) : attribute(result, item.name) %}
+       
+        {% if item.func == 'dateTimeFormat' %}
+            {% set value = formatDatetime(value, item.getOption('dateTimeFormat') ?: 'Y-m-d H:i:s', null ) %}
+        {% endif %}
+        
+        {% if item.filter == 'yes_no' %}
+            {% if item.getOption('revers') %}
+                {% set value = value ? 'No'|trans : 'Yes'|trans %}
+            {% else %}
+                {% set value = value ? 'Yes'|trans : 'No'|trans %}
+            {% endif %}
+        {% endif %}
+        
+        {% if value and item.getOption('icon_path') %}
+            {% set value = '<img src="' ~ ( value matches '{/http/}' ? value : asset(item.getOption('icon_path') ~ value) ) ~ '" width="' ~ item.getOption('icon_width') ~ '" title="Icon" alt="Icon" />' %}
+        {% endif %}
+        
+        {% if item.getOption('link_id') %}
+            {% set lid = item.getOption('lid') ?: 'id' %}
+            {% set click = item.getOption('click') ?: '' %}
+            {% set value = '<a style="text-decoration:underline;" ' ~ click ~ ' href="' ~ path(item.getOption('link_id'), { 'id': attribute(result, lid) }) ~ '">' ~ value ~ '</a>' %}
+        {% endif %}
+        
+        {% if item.getOption('link_javascript') %}
+            {% set link_class = item.getOption('link_class') ?: '' %}
+            {% set value = '<a data-id="'~attribute(result, 'id')~'" style="text-decoration:underline;" class="'~link_class~'" href="javascript:void(0)">' ~ value ~ '</a>' %}
+        {% endif %}
+        
+        {% if item.getOption('transchoice') %}
+            {% set value = item.getOption('transchoice') | transchoice(value,{},item.getOption('transchoice_d') ) %}
+        {% endif %}
+        
+        {% if item.getOption('addon_options') and addon_options[item.getOption('addon_options')] is defined and isNumeric(value) %}
+            {% set value = addon_options[item.getOption('addon_options')][value] %}
+        {% endif %}
+
+        {% if value and item.getOption('round') %}
+            {% set value =  value | number_format(item.getOption('round'), '.', ' ') %}
+        {% endif %}
+        
+        {% if item.getOption('gr_checkbox') %}
+            {% set value = '<input type="checkbox" name="'~item.getOption('gr_checkbox')~'[]" value="'~value~'" class="gr_oper '~item.getOption('gr_checkbox')~'">' %}
+        {% endif %}
+        
+        <td{% if item.getOption('class') %} class="{{ item.getOption('class') }}"{% endif %} {% if item.getOption('style') %} style="{{ item.getOption('style') }}"{% endif %}>
+            {{ value | raw }}
+        </td>
+        
+    {% endfor %}
+</tr>
+{% endfor %}
+<tfoot>
+{% if autosum is defined and autosum|length %}
+<tr class="autosum">
+    {% for item in items %}
+        {% if item.autosum %}
+            <th title="AutoSUM"{% if item.getOption('class') %} class="{{ item.getOption('class') }}"{% endif %} {% if item.getOption('style') %} style="{{ item.getOption('style') }}"{% endif %}>
+                <span class="label label-success">
+                    {% if zkNumberFormat is defined %} {#{ [2, '.', ','] }#}
+                        {{ autosum[item.autosum] | number_format(zkNumberFormat[0]|default(0),zkNumberFormat[1]|default(''),zkNumberFormat[2]|default('')) }}
+                    {% elseif zkRound is defined %}
+                        {{ zkRound|format(autosum[item.autosum]) }} {#{ %.2f }#}
+                    {% else %}
+                        {{ autosum[item.autosum] }}
+                    {% endif %}
+                </span>
+            </th>
+        {% else %}
+            <th></th>
+        {% endif %}
+    {% endfor %}
+</tr>
+{% endif %}
+<tr>
+    <th class="text-center" colspan="{{ items | length }}">{{ knp_pagination_render(results.pagination) }}</th>
+</tr>
+</tfoot>
+</table>

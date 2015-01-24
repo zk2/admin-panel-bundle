@@ -1,0 +1,50 @@
+<div id="admin-filter">
+    <nav class="navbar zk-intetface-navbar" role="navigation">
+        <a class="navbar-brand zk-intetface-navbar-brand" data-toggle="collapse" href="#collapseOne">
+            <span class="glyphicon glyphicon-search"></span>
+            {% trans with {} from "admin_panel" %}filter.filter{% endtrans %}
+        </a>
+    </nav>
+    <div id="collapseOne" class="accordion-body collapse">
+        <div class="accordion-inner" style="background:white;">
+            <form class="form-inline" role="form" id="zk-form-filter" method="POST" action="{{ path( app.request.get('_route'),app.request.get('_route_params') ) }}">
+                {% if addon_fields is defined %}
+                    {% for name,value in addon_fields %}
+                        <input type="hidden" name="{{name}}" value="{{value}}">
+                    {% endfor %}
+                {% endif %}
+                <table id="filter_table" class="table table-condensed">
+                    <tr class="filter_tr">
+                        {% set ind = 0 %}
+                        {% set field = '' %}
+                        {% for key,form in filter_form.children %}
+                            {% if field != '' and field != key|slice(0, -1) and ind % colspan == 0 %}
+                                </tr><tr class="filter_tr">
+                            {% endif %}
+                            {% if field == '' %}<td>{% endif %}
+                            {% if key | slice(-1) == '0' %}
+                                {% set ind = ind + 1 %}
+                                {% if field != '' %}</td><td>{% endif %}
+                                {{ form_label(form) }}
+                            {% endif %}
+                            {% set field = key|slice(0, -1) %}
+                            {{ form_widget(form) }}
+                        {% endfor %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th colspan="{{ colspan }}" class="zk-intetface-navbar">
+                            <a href="{{ this_path }}?_reset=1" class="zk-intetface-navbar-brand">
+                                {% trans with {} from "admin_panel" %}filter.reset{% endtrans %}
+                            </a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <button type="submit" class="btn btn-small btn-success">
+                                {% trans with {} from "admin_panel" %}filter.filter{% endtrans %}
+                                <span class="glyphicon glyphicon-search"></span>
+                            </button>
+                        </th>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+</div>
