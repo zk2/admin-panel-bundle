@@ -1,0 +1,48 @@
+services:
+
+    zk2_admin_panel.twig_extension:     
+        class:        Zk2\Bundle\AdminPanelBundle\Twig\Extension\AdminPanelExtension
+        tags:       
+            -  { name: twig.extension }
+
+    zk2_admin_panel.form.type.text_filter:     
+        class:  Zk2\Bundle\AdminPanelBundle\AdminPanel\Form\Type\TextFilterType
+        tags:
+            - { name: form.type, alias: zk2_admin_panel_text_filter }
+
+    zk2_admin_panel.form.type.boolean_filter:     
+        class:  Zk2\Bundle\AdminPanelBundle\AdminPanel\Form\Type\BooleanFilterType
+        tags:
+            - { name: form.type, alias: zk2_admin_panel_boolean_filter }
+
+    zk2_admin_panel.form.type.entity_filter:     
+        class:  Zk2\Bundle\AdminPanelBundle\AdminPanel\Form\Type\EntityFilterType
+        tags:
+            - { name: form.type, alias: zk2_admin_panel_entity_filter }
+
+    zk2_admin_panel.form.type.date_filter:     
+        class:  Zk2\Bundle\AdminPanelBundle\AdminPanel\Form\Type\DateFilterType
+        tags:
+            - { name: form.type, alias: zk2_admin_panel_date_filter }
+
+    zk2_admin_panel.form.type.choice_filter:     
+        class:  Zk2\Bundle\AdminPanelBundle\AdminPanel\Form\Type\ChoiceFilterType
+        tags:
+            - { name: form.type, alias: zk2_admin_panel_choice_filter }
+
+    zk2_interface.form.type.zk2_date_time_bootstramp:     
+        class:  Zk2\Bundle\AdminPanelBundle\AdminPanel\Form\Type\DateTimeBootstrapType
+        tags:
+            - { name: form.type, alias: zk2_date_time_bootstrap }
+
+    zk2_interface.form.type.zk2_date_bootstramp:     
+        class:  Zk2\Bundle\AdminPanelBundle\AdminPanel\Form\Type\DateBootstrapType
+        tags:
+            - { name: form.type, alias: zk2_date_bootstrap }
+
+    zk2_admin_panel.query_builder:
+        class:        Zk2\Bundle\AdminPanelBundle\AdminPanel\QueryBuilder
+
+    zk2_admin_panel.form_filter_session:
+        class:        Zk2\Bundle\AdminPanelBundle\AdminPanel\FormFilterSession
+        arguments:    [@doctrine,@session]     

@@ -1,0 +1,11 @@
+paginator:
+    results: "result|results|results"
+    items: "page|pages|pages"
+    firstPageText: First page
+    previousPageText: Previous page
+    nextPageText: Next page
+    lastPageText: Last page
+
+filter:
+    filter: Filter
+    reset: Reset

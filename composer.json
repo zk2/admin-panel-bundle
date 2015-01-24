@@ -1,0 +1,31 @@
+{
+    "name": "zk2/admin-panel-bundle",
+    "description": "Bundle allows you to quickly generate administrative interface to a tabular view \"List\", broken down by pages, sorts and filters on all fields",
+    "version" : "1.0.0",
+    "type" : "symfony-bundle",
+    "homepage": "https://github.com/zk2/AdminPanelBundle",
+    "license": "MIT",
+    "keywords" : ["admin panel", "content manager"],
+    "authors": [
+        {
+            "name": "Evgeniy Budanov",
+            "email": "budanov.ua@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3",
+        "symfony/symfony": ">=2.1",
+        "knplabs/knp-paginator-bundle": ">=2.4",
+        "braincrafted/bootstrap-bundle": ">=2.1",
+        "twbs/bootstrap": ">=3.1"
+    },
+    "autoload": {
+        "psr-0": { "Zk2\\Bundle\\AdminPanelBundle\\": "" }
+    },
+    "target-dir": "Zk2/Bundle/AdminPanelBundle/",
+    "extra" : {
+        "branch-alias" : {
+            "dev-master" : "1.0.x-dev"
+        }
+    }
+}

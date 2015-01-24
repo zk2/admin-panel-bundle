@@ -1,0 +1,22 @@
+paginator:
+    results: "Le résultat|Du résultat|Des résultats"
+    items: "La page|Les pages|Des pages"
+    firstPageText: La première page
+    previousPageText: La page précédente
+    nextPageText: La page suivant
+    lastPageText: La dernière page
+    
+filter:
+    filter: Le filtre
+    reset: La faille
+ 
+ 
+  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
