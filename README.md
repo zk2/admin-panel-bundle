@@ -239,7 +239,7 @@ Also the options array may include:
 * - 'lid'     => 'brand_id'   -- property or method to transfer ID in route
 * - 'style' => 'text-align:center' -- any css style (using a table cell)
 * - 'class' => 'my-class' -- any DOM class (using a table cell)
-* - 'icon_path' => '/img/' -- will turn into a tag <img src = "{icon_path} value" />
+* - 'icon_path' => '/img/' -- will turn into a tag img src = "{icon_path} value"
 * - 'icon_width' => 24 -- used with icon_path (width of the image)
 * - 'zkNumberFormat' => array(2,'.',' ') -- PHP::number_format
 * - 'dateTimeFormat' => 'Y-m-d' -- used for func::dateTimeFormat
