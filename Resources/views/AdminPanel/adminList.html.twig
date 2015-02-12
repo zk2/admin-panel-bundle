@@ -14,7 +14,7 @@
 </thead>
 {# table body #}
 
-{% set item_type = isArray(results.pagination.items[0]) ? 'array' : 'object' %}
+{% set item_type = (results.pagination.items|length and isArray(results.pagination.items[0])) ? 'array' : 'object' %}
 {% set default_number_format = zkNumberFormat is defined ? zkNumberFormat : [0,'.',''] %}
 
 {% for result in results.pagination %}
