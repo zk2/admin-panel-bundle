@@ -3,7 +3,7 @@
     "description": "Bundle allows you to quickly generate administrative interface to a tabular view \"List\", broken down by pages, sorts and filters on all fields",
     "version" : "1.0.0",
     "type" : "symfony-bundle",
-    "homepage": "https://github.com/zk2/AdminPanelBundle",
+    "homepage": "https://github.com/zk2/admin-panel-bundle",
     "license": "MIT",
     "keywords" : ["admin panel", "content manager"],
     "authors": [
