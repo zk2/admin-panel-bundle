@@ -93,6 +93,14 @@ abstract class AdminPanelController extends Controller
     }
     
     /**
+     * Set current class
+     */
+    protected function setClass($class)
+    {
+        return $this->class = $class;
+    }
+    
+    /**
      * Get EntityManager
      * 
      * @return EntityManager
