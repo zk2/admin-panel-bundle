@@ -1,3 +1,15 @@
-<a{% for attr, value in options %} {{ attr }}="{{ value }}"{% endfor %}>{{ title }}</a>
-{% if options['class'] == 'asc' %}<span class="glyphicon glyphicon-arrow-down white"></span>{% endif %}
-{% if options['class'] == 'desc' %}<span class="glyphicon glyphicon-arrow-up white"></span>{% endif %}
+<span>{{ title }}</span>
+{% if options['class'] == 'asc' %}<span class="glyphicon glyphicon-arrow-up white"></span>{% endif %}
+{% if options['class'] == 'desc' %}<span class="glyphicon glyphicon-arrow-down white"></span>{% endif %}
+<span class="zk-sort-container">
+    <div class="zk-sort">
+        <a href="{{ options['href']~'&direction=asc' }}" class="{{ options['class'] }}" title="A-Z">
+            <img src="{{ asset('bundles/zk2adminpanel/images/white-asc.gif') }}">
+        </a>
+    </div>
+    <div class="zk-sort">
+        <a href="{{ options['href']~'&direction=desc' }}" class="{{ options['class'] }}" title="Z-A">
+            <img src="{{ asset('bundles/zk2adminpanel/images/white-desc.gif') }}">
+        </a>
+    </div>
+</span>
