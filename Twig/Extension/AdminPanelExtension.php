@@ -44,8 +44,13 @@ class AdminPanelExtension extends Twig_Extension
      *  @param string $timezone
      *  @return DateTime
      */
-    public function renderFormatDatetime($date, $format)
+    public function renderFormatDatetime($date, $format, $timezone = null)
     {
+        if (null === $timezone)
+        {
+            $timezone = $this->container->get('session')->get('timezone', date_default_timezone_get());
+        }
+ 
         if (!$date instanceof \DateTime)
         {
             if (ctype_digit((string) $date))
@@ -54,10 +59,17 @@ class AdminPanelExtension extends Twig_Extension
             }
             else
             {
-                return null;
-                $date = new \DateTime($date);
+                return $date;
             }
         }
+ 
+        if (!$timezone instanceof \DateTimeZone)
+        {
+            $timezone = new \DateTimeZone($timezone);
+        }
+ 
+        $date->setTimezone($timezone);
+ 
         return $date->format($format);
     }
 
