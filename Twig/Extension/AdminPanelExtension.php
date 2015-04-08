@@ -13,6 +13,13 @@ use Twig_Filter_Function;
  */
 class AdminPanelExtension extends Twig_Extension
 {
+    protected $container;
+  
+    public function __construct($container)
+    {
+        $this->container = $container;
+    }
+    
     /**
      *  @return array
      *  @see \Twig_Extension

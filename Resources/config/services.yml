@@ -1,7 +1,8 @@
 services:
 
     zk2_admin_panel.twig_extension:     
-        class:        Zk2\Bundle\AdminPanelBundle\Twig\Extension\AdminPanelExtension
+        class:     Zk2\Bundle\AdminPanelBundle\Twig\Extension\AdminPanelExtension
+        arguments: [@service_container]
         tags:       
             -  { name: twig.extension }
 
