@@ -28,7 +28,6 @@ class AdminPanelExtension extends Twig_Extension
     {
         return array(
             'isNumeric'      => new \Twig_Function_Method($this, 'renderIsNumeric', array('is_safe' => array('html'))),
-            'formatDatetime' => new \Twig_Function_Method($this, 'renderFormatDatetime', array('is_safe' => array('html'))),
             'isArray'        => new \Twig_Function_Method($this, 'renderIsArray', array('is_safe' => array('html'))),
         );
     }
@@ -42,42 +41,6 @@ class AdminPanelExtension extends Twig_Extension
     public function renderIsNumeric($item)
     {
         return is_numeric($item);
-    }
-    
-    /**
-     *  formatDatetime
-     *
-     *  @param DateTime $date
-     *  @param string $timezone
-     *  @return DateTime
-     */
-    public function renderFormatDatetime($date, $format, $timezone = null)
-    {
-        if (null === $timezone)
-        {
-            $timezone = $this->container->get('session')->get('timezone', date_default_timezone_get());
-        }
- 
-        if (!$date instanceof \DateTime)
-        {
-            if (ctype_digit((string) $date))
-            {
-               $date = new \DateTime('@'.$date);
-            }
-            else
-            {
-                return $date;
-            }
-        }
- 
-        if (!$timezone instanceof \DateTimeZone)
-        {
-            $timezone = new \DateTimeZone($timezone);
-        }
- 
-        $date->setTimezone($timezone);
- 
-        return $date->format($format);
     }
 
     /**

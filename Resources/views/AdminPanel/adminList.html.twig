@@ -33,7 +33,7 @@
         {% endif %}
        
         {% if item.getFunc() == 'dateTimeFormat' %}
-            {% set value = formatDatetime(value, item.getOption('dateTimeFormat') ?: 'Y-m-d H:i:s', null ) %}
+            {% set value = value|date(item.getOption('dateTimeFormat') ?: 'Y-m-d H:i:s') %}
         {% endif %}
         
         {% if item.filter == 'yes_no' %}
