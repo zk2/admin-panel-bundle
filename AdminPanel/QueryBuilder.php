@@ -3,6 +3,7 @@ namespace Zk2\Bundle\AdminPanelBundle\AdminPanel;
 
 use Symfony\Component\Form\Form;
 use Doctrine\ORM\QueryBuilder as BaseQueryBuilder;
+use Doctrine\ORM\NativeQuery;
 
 /**
 * Build a query from a given form object,
@@ -25,9 +26,35 @@ class QueryBuilder
         
         foreach ( $group_child as $field => $child )
         {
-            $this->applyFilter( $queryBuilder, $child, $field );
+            if( $condition = $this->applyFilter( $child, $field ) )
+	    {
+		$queryBuilder->andWhere($condition);
+	    }
         }
         return $queryBuilder->setParameters($this->parameters);
+    }
+    
+    /**
+     * Build a filter Native query.
+     *
+     * @param \Symfony\Component\Form\Form $form
+     * @param Doctrine\ORM\NativeQuery $query
+     * @return Doctrine\ORM\NativeQuery
+     */
+    public function buildNativeQuery( Form $form, NativeQuery $query )
+    {
+        $group_child = $this->groupChild( $form );
+	
+	$sql = $query->getSQL();
+        
+        foreach ( $group_child as $field => $child )
+        {
+            if( $condition = $this->applyFilter( $child, $field ) )
+	    {
+		$sql .= ' AND '.$condition;
+	    }
+        }
+        return $query->setSQL($sql)->setParameters($this->parameters);
     }
     
     /**
@@ -128,10 +155,7 @@ class QueryBuilder
 	$condition = trim($condition,'AND');
 	$condition = trim($condition,'OR');
         
-        if($condition)
-	{
-            $queryBuilder->andWhere($condition);
-	}
+        return $condition;
     }
 
 }

@@ -6,6 +6,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Zk2\Bundle\AdminPanelBundle\AdminPanel\Description\ListFieldDescription;
 use Zk2\Bundle\AdminPanelBundle\AdminPanel\Description\FilterFieldDescription;
 use Zk2\Bundle\AdminPanelBundle\AdminPanel\Form\Type\BuilderFormFilterType;
+use Doctrine\ORM\Query\ResultSetMapping;
+use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\NativeQuery;
 
 /**
  * Class AdminPanelController
@@ -153,13 +156,31 @@ abstract class AdminPanelController extends Controller
     }
     
     /**
+     * buildNativeQuery
+     *
+     * Building a native sql query without conditions
+     * 
+     * @return $this
+     */
+    protected function buildNativeQuery( $query, array $fields )
+    {
+        $rsm = new ResultSetMapping();
+        foreach($fields as $field)
+        {
+            $rsm->addScalarResult($field,$field);
+        }
+        $this->query = $this->em->createNativeQuery($query, $rsm);
+        return $this;
+    }
+    
+    /**
      * Get Query
      * 
      * @return \Doctrine\ORM\QueryBuilder
      */
     protected function getQuery()
     {
-        if( !$this->query ) $this->buildQuery();
+        //if( !$this->query ) $this->buildQuery();
         return $this->query;
     }
     
@@ -204,6 +225,8 @@ abstract class AdminPanelController extends Controller
                 $this->filter_form->setData( $default );
             }
             
+            $method = $this->query instanceof NativeQuery ? 'buildNativeQuery' : 'buildQuery';
+            
             if ( $this->get('request')->getMethod() == 'POST' )
             {
                 $this->get('session')->remove( '_filter_'.$this->get('request')->get('_route') );
@@ -211,7 +234,7 @@ abstract class AdminPanelController extends Controller
                 
                 $this->filter_form->bind( $this->get('request') );
                 
-                $this->get('zk2_admin_panel.query_builder')->buildQuery( $this->filter_form, $this->query );
+                $this->get('zk2_admin_panel.query_builder')->$method( $this->filter_form, $this->query );
                 
                 $filterService = $this->get('zk2_admin_panel.form_filter_session');
                 $filterService->serialize( $this->filter_form->getData(),'_filter_'.$this->get('request')->get('_route') );
@@ -222,11 +245,11 @@ abstract class AdminPanelController extends Controller
                 $data = $filterService->unserialize( '_filter_'.$this->get('request')->get('_route'), $this->em_name );
                 
                 $this->filter_form->setData( $data );
-                $this->get('zk2_admin_panel.query_builder')->buildQuery( $this->filter_form, $this->query );
+                $this->get('zk2_admin_panel.query_builder')->$method( $this->filter_form, $this->query );
             }
             elseif( count($default) )
             {
-                $this->get('zk2_admin_panel.query_builder')->buildQuery( $this->filter_form, $this->query );
+                $this->get('zk2_admin_panel.query_builder')->$method( $this->filter_form, $this->query );
             }
         }
     }
@@ -246,6 +269,8 @@ abstract class AdminPanelController extends Controller
     
     /**
      * getSumColumns
+     *
+     * DEPRECATE !!! Use getAggregateResult()
      * 
      * The total sum of the values ​​for the selected columns
      * 
@@ -288,6 +313,57 @@ abstract class AdminPanelController extends Controller
     }
     
     /**
+     * getAggregateResult
+     * 
+     * performs aggregation SQL query
+     *
+     * @return null|SingleResult
+     */
+    protected function getAggregateResult()
+    {
+        $select = '';
+        if( $native = ($this->query instanceof NativeQuery) )
+        {
+            $rsm = new ResultSetMapping();
+        }
+        foreach( $this->list_fields as $field )
+        {
+            if( $func = $field->getPatternAggregateSqlFunction() )
+            {
+                $select .= sprintf("%s AS %s,", $func['func'],$func['name']);
+                if( $native ) $rsm->addScalarResult($func['name'],$func['name']);
+            }
+        }
+        $select = trim($select,',');
+            
+        if( $select )
+        {
+            if($native)
+            {
+                $q = strstr( $this->query->getSQL(), " FROM " );
+                $q = "SELECT ".$select.$q;
+                $sumQuery = $this->em->createNativeQuery($q, $rsm)
+                    ->setParameters($this->query->getParameters());
+            }
+            else
+            {
+                $q = strstr( $this->query->getQuery()->getDql(), " FROM " );
+                $q = "SELECT ".$select.$q;
+                $sumQuery = $this->em->createQuery($q)
+                    ->setParameters($this->query->getQuery()->getParameters())
+                    ->setMaxResults(1);
+            }
+            
+            try{
+                return $sumQuery->getSingleResult();
+            }
+            catch (\Doctrine\Orm\NoResultException $e){
+                return null;
+            }
+        }
+    }
+    
+    /**
      * getViewFiltersForm
      * 
      * @return \Symfony\Component\Form\Form::createView or false
@@ -322,10 +398,43 @@ abstract class AdminPanelController extends Controller
             $page = $this->get('session')->get( '_pager_'.$this->get('request')->get('_route') );
         }
         
+        if( isset($options['total_item_count']) and (integer)$options['total_item_count'] )
+        {
+            $pagination->setTotalItemCount($options['total_item_count']);
+        }
+        
+        if( is_array($this->query) or $this->query instanceof QueryBuilder )
+        {
+            $results = $this->query;
+        }
+        elseif( $this->query instanceof NativeQuery )
+        {
+            $rsm = new ResultSetMapping();
+            $rsm->addScalarResult('cnt','cnt');
+            $q = strstr( $this->query->getSQL(), " FROM " );
+            $q = "SELECT COUNT(*) cnt ".$q;
+            $cntQuery = $this->em->createNativeQuery($q, $rsm)
+                ->setParameters($this->query->getParameters());
+            try{
+                $cnt = $cntQuery->getSingleScalarResult();
+            }
+            catch (\Doctrine\Orm\NoResultException $e){
+                $cnt = 0;
+            }
+            $pagination->setTotalItemCount($cnt);
+            
+            if(!isset($options['not_use_limit_offset']))
+            {
+                $offset = $limit * ($page - 1);
+                $this->query->setSQL($this->query->getSQL().' LIMIT '.$limit.' OFFSET '.$offset);
+            }
+            $results = $this->query->getResult();
+        }
+        
         $this->paginator = $this->get('knp_paginator');
         
         $pagination = $this->paginator->paginate(
-            $this->query,
+            $results,
             $this->get('request')->query->get('page', $page), 
             $limit,
             $options

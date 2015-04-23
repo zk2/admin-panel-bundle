@@ -1,0 +1,15 @@
+{% if autosum is defined and autosum|length %}
+<tr class="autosum">
+    {% for item in items %}
+        {% if item.patternAggregateSqlFunction %}
+            <th title="AutoSUM"{% if item.getOption('class') %} class="{{ item.getOption('class') }}"{% endif %} {% if item.getOption('style') %} style="{{ item.getOption('style') }}"{% endif %}>
+                <span class="label label-success">
+                    {{ autosum[item.patternAggregateSqlFunction.name] | number_format(default_number_format[0]|default(0),default_number_format[1]|default('.'),default_number_format[2]|default('')) }}
+                </span>
+            </th>
+        {% else %}
+            <th></th>
+        {% endif %}
+    {% endfor %}
+</tr>
+{% endif %}

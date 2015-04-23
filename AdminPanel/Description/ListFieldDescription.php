@@ -185,6 +185,8 @@ class ListFieldDescription
     /**
      *  getPatternInAutosum
      *
+     *  DEPRECATE !!! Use getPatternAggregateSqlFunction()
+     *
      *  @return string
      */
     public function getPatternInAutosum()
@@ -200,11 +202,26 @@ class ListFieldDescription
     /**
      *  getAutosum
      *
-     *  @return string $autosum
+     *  DEPRECATE !!! Use getPatternAggregateSqlFunction()
+     *
+     *  @return 
      */
     public function getAutosum()
     {
-        return $this->options['autosum'];
+        return $this->getPatternAggregateSqlFunction();
+    }
+
+    /**
+     *  getPatternAggregateSqlFunction
+     *
+     *  @return array( name,  pattern ) | null
+     */
+    public function getPatternAggregateSqlFunction()
+    {
+        if($this->options['autosum']) return $this->options['autosum'];
+        if($opt = $this->getOption('aggregate_sql_function'))
+        return array('name' => $this->name.'__aggr','func' => $opt);
+        return null;
     }
 
 }
