@@ -2,7 +2,7 @@ services:
 
     zk2_admin_panel.twig_extension:     
         class:     Zk2\Bundle\AdminPanelBundle\Twig\Extension\AdminPanelExtension
-        arguments: [@service_container]
+        arguments: [@session]
         tags:       
             -  { name: twig.extension }
 

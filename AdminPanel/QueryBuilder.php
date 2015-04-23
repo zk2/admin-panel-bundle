@@ -74,7 +74,7 @@ class QueryBuilder
     /**
      * {@inheritdoc}
      */
-    protected function applyFilter( BaseQueryBuilder $queryBuilder, $form, $field )
+    protected function applyFilter( $form, $field )
     {
 	$array = explode('_',$field);
 	$alias = $array[0];
@@ -85,14 +85,25 @@ class QueryBuilder
         
         foreach( $form as $i => $child )
         {
+            if( $child->getConfig()->getOption('not_used') ) continue;
+	    
+	    $timezone = $child->getConfig()->getOption('utc_date_time');
+	    
             $or_and = ( $child->has('condition_pattern') ) ? $child->get('condition_pattern')->getData() : ' ';
         
             $paramName = sprintf( '%s_%s_param_%s', $alias, $field, $i );
+	    
+	    if( $child->get('name')->getData() instanceof \DateTime )
+	    {
+		if($timezone)
+		{
+		    $d_ = clone $child->get('name')->getData();
+		    $get_name = $d_->setTimezone(new \DateTimeZone($timezone))->format('Y-m-d H:i:s');
+		}
+		else $get_name = $child->get('name')->getData()->format('Y-m-d');
+	    }
+            else $get_name = $child->get('name')->getData();
             
-            $get_name = $child->get('name')->getData() instanceof \DateTime
-                ? $child->get('name')->getData()->format('Y-m-d')
-                : $child->get('name')->getData();
-                    
             if( ( $child->has('name') and trim( (string)$get_name ) != '' )
 		or ( $child->has('condition_operator') and in_array($child->get('condition_operator')->getData(),array('IS NULL','IS NOT NULL'))) )
             {
@@ -150,7 +161,7 @@ class QueryBuilder
                 }
             }
         }
-        
+        $condition = str_replace('noalias.','',$condition);
 	$condition = trim($condition);
 	$condition = trim($condition,'AND');
 	$condition = trim($condition,'OR');

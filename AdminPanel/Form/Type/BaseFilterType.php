@@ -39,6 +39,8 @@ abstract class BaseFilterType extends AbstractType
 	    'sf_choice' => null,
 	    'sf_query_builder' => null,
 	    'revert' => false,
+	    'not_used' => null,
+	    'utc_date_time' => false,
         ));
     }
     

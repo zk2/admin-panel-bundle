@@ -386,7 +386,8 @@ abstract class AdminPanelController extends Controller
      */
     protected function getPaginator( $limit=30, $options=array() )
     {
-        $page = 1;
+        $page = $this->get('request')->query->get('page', 1);
+        $cnt = 0;
         
         if( $this->get('request')->query->has('page') )
         {
@@ -400,12 +401,19 @@ abstract class AdminPanelController extends Controller
         
         if( isset($options['total_item_count']) and (integer)$options['total_item_count'] )
         {
-            $pagination->setTotalItemCount($options['total_item_count']);
+            $cnt = $options['total_item_count'];
         }
+        
+        $this->paginator = $this->get('knp_paginator');
         
         if( is_array($this->query) or $this->query instanceof QueryBuilder )
         {
-            $results = $this->query;
+            $pagination = $this->paginator->paginate(
+                $this->query,
+                $page, 
+                $limit,
+                $options
+            );
         }
         elseif( $this->query instanceof NativeQuery )
         {
@@ -421,24 +429,30 @@ abstract class AdminPanelController extends Controller
             catch (\Doctrine\Orm\NoResultException $e){
                 $cnt = 0;
             }
-            $pagination->setTotalItemCount($cnt);
+            
+            $sql = $this->query->getSQL();
+            
+            $pagination = $this->paginator->paginate(array());
+            
+            $sort_name = $pagination->getPaginatorOption('sortFieldParameterName');
+            $sort_direction_name = $pagination->getPaginatorOption('sortDirectionParameterName');
+            
+            if( $this->get('request')->query->has($sort_name) and  $this->get('request')->query->has($sort_direction_name) )
+            {
+                $sql .= ' ORDER BY '.$this->get('request')->query->get($sort_name).' '.$this->get('request')->query->get($sort_direction_name);
+            }
             
             if(!isset($options['not_use_limit_offset']))
             {
                 $offset = $limit * ($page - 1);
-                $this->query->setSQL($this->query->getSQL().' LIMIT '.$limit.' OFFSET '.$offset);
+                $this->query->setSQL($sql.' LIMIT '.$limit.' OFFSET '.$offset);
             }
-            $results = $this->query->getResult();
+            
+            $pagination->setCurrentPageNumber($page);
+            $pagination->setItemNumberPerPage($limit);
+            $pagination->setTotalItemCount($cnt);
+            $pagination->setItems($this->query->getResult());
         }
-        
-        $this->paginator = $this->get('knp_paginator');
-        
-        $pagination = $this->paginator->paginate(
-            $results,
-            $this->get('request')->query->get('page', $page), 
-            $limit,
-            $options
-        );
         $pagination->setTemplate( $this->container->getParameter( 'zk2_admin_panel.pagination_template' ) );
         $pagination->setSortableTemplate( $this->container->getParameter( 'zk2_admin_panel.sortable_template' ) );
         return compact( 'pagination' );

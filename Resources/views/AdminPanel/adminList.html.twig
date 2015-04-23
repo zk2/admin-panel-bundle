@@ -14,7 +14,7 @@
     {% endif %}
 {% endfor %}
 </tr>
-{% if aggregate == 'top' %}
+{% if autosum is defined and aggregate == 'top' %}
     {% include "Zk2AdminPanelBundle:AdminPanel:aggregate.html.twig" with { 'autosum': autosum, 'items': items, 'default_number_format': default_number_format } %}
 {% endif %}
 </thead>
@@ -35,7 +35,9 @@
         {% endif %}
        
         {% if item.getFunc() == 'dateTimeFormat' %}
-            {% set value = value|date(item.getOption('dateTimeFormat') ?: 'Y-m-d H:i:s') %}
+            {% set dformat = item.getOption('dateTimeFormat') ?: 'Y-m-d H:i:s' %}
+            {% set dzone = item.getOption('dateTimeZone') %}
+            {% set value = convertDateTime(value,dformat,dzone) %}
         {% endif %}
         
         {% if item.filter == 'yes_no' %}
@@ -78,7 +80,7 @@
 </tr>
 {% endfor %}
 <tfoot>
-{% if aggregate == 'bottom' %}
+{% if autosum is defined and aggregate == 'bottom' %}
     {% include "Zk2AdminPanelBundle:AdminPanel:aggregate.html.twig" with { 'autosum': autosum, 'items': items, 'default_number_format': default_number_format } %}
 {% endif %}
 <tr>

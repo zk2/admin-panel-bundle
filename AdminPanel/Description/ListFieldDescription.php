@@ -178,7 +178,7 @@ class ListFieldDescription
      */
     public function getAliasDotName()
     {
-        if( 'noalias' == $this->alias ) return $this->alias;
+        if( 'noalias' == $this->alias ) return $this->name;
         return sprintf( "%s.%s", $this->alias, $this->name );
     }
 

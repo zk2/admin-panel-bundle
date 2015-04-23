@@ -50,6 +50,7 @@ class BuilderFormFilterType extends AbstractType
 		    'label_attr' => array('class' => 'filter_label'),
 		    'data_index' => $i,
 		    'attr' =>  array('data-index' => $i),
+		    'not_used' => $field->getOption('not_used'),
                 );
 		
 		if( BaseFilterType::ENTITY_FILTER == $type )
@@ -66,6 +67,10 @@ class BuilderFormFilterType extends AbstractType
 		elseif( BaseFilterType::BOOLEAN_FILTER == $type )
 		{
 		    $zk2_options['revert'] = $field->getOption('revert');
+		}
+		elseif( BaseFilterType::DATE_FILTER == $type )
+		{
+		    $zk2_options['utc_date_time'] = $field->getOption('utc_date_time') ?: date_default_timezone_get();
 		}
 		
 		if( $qb = $field->getOption('sf_query_builder') )
