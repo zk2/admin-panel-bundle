@@ -87,20 +87,18 @@ class QueryBuilder
         {
             if( $child->getConfig()->getOption('not_used') ) continue;
 	    
-	    $timezone = $child->getConfig()->getOption('utc_date_time');
-	    
             $or_and = ( $child->has('condition_pattern') ) ? $child->get('condition_pattern')->getData() : ' ';
         
             $paramName = sprintf( '%s_%s_param_%s', $alias, $field, $i );
 	    
 	    if( $child->get('name')->getData() instanceof \DateTime )
 	    {
-		if($timezone)
+		if($timezone = $child->getConfig()->getOption('use_timezone'))
 		{
 		    $d_ = clone $child->get('name')->getData();
 		    $get_name = $d_->setTimezone(new \DateTimeZone($timezone))->format('Y-m-d H:i:s');
 		}
-		else $get_name = $child->get('name')->getData()->format('Y-m-d');
+		else $get_name = $child->get('name')->getData()->format('Y-m-d H:i:s');
 	    }
             else $get_name = $child->get('name')->getData();
             

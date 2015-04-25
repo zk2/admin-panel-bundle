@@ -68,9 +68,9 @@ class BuilderFormFilterType extends AbstractType
 		{
 		    $zk2_options['revert'] = $field->getOption('revert');
 		}
-		elseif( BaseFilterType::DATE_FILTER == $type )
+		elseif( BaseFilterType::DATE_FILTER == $type and ($tz = $field->getOption('use_timezone')) )
 		{
-		    $zk2_options['utc_date_time'] = $field->getOption('utc_date_time') ?: date_default_timezone_get();
+		    $zk2_options['use_timezone'] =  $tz;
 		}
 		
 		if( $qb = $field->getOption('sf_query_builder') )
