@@ -441,6 +441,15 @@ abstract class AdminPanelController extends Controller
             {
                 $sql .= ' ORDER BY '.$this->get('request')->query->get($sort_name).' '.$this->get('request')->query->get($sort_direction_name);
             }
+            elseif( isset($options['default_sort']) and $options['default_sort'] )
+            {
+                $sql .= ' ORDER BY ';
+                foreach($options['default_sort'] as $field => $type)
+                {
+                    $sql .= $field.' '.$type.',';
+                }
+                $sql = trim($sql,',');
+            }
             
             if(!isset($options['not_use_limit_offset']))
             {
