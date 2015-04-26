@@ -83,6 +83,10 @@ class AdminPanelExtension extends Twig_Extension
 
         if (!$date instanceof \DateTime)
         {
+            if(!strtotime($date) and !(ctype_digit((string) $date)))
+            {
+                return null;
+            }
             if (!$inputTimezone instanceof \DateTimeZone)
             {
                 $inputTimezone = new \DateTimeZone($inputTimezone);
