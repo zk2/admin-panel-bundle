@@ -33,7 +33,7 @@ class DateFilterType extends BaseFilterType
         if( $options['condition_operator'] )
         {
 	    $builder->add('condition_operator', 'choice',  array(
-		'choices' => ConditionOperator::get('date_from'),
+		'choices' => $options['condition_operator'] ? ConditionOperator::get($options['condition_operator']) : ConditionOperator::get('date_from'),
 		'attr' => array(
                     'class' => 'sf_filter_condition_operator',
                 )

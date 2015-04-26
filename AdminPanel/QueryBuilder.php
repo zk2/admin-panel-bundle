@@ -11,27 +11,38 @@ use Doctrine\ORM\NativeQuery;
 */
 class QueryBuilder
 {
-    protected $parameters=array();
+    protected $query,$platform_name,$parameters=array();
+    
+    protected function getPlatfornName()
+    {
+	if( $this->query instanceof \Doctrine\ORM\AbstractQuery )
+	{
+	    return $this->platform_name = $this->query->getEntityManager()->getConnection()->getDatabasePlatform()->getName();
+	}
+    }
     
     /**
      * Build a filter query.
      *
      * @param \Symfony\Component\Form\Form $form
-     * @param \Doctrine\ORM\QueryBuilder $queryBuilder
+     * @param \Doctrine\ORM\QueryBuilder $query
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function buildQuery( Form $form, BaseQueryBuilder $queryBuilder )
+    public function buildQuery( Form $form, BaseQueryBuilder $query )
     {
+	$this->query = $query;
+	//$this->getPlatfornName();
+	
         $group_child = $this->groupChild( $form );
         
         foreach ( $group_child as $field => $child )
         {
             if( $condition = $this->applyFilter( $child, $field ) )
 	    {
-		$queryBuilder->andWhere($condition);
+		$query->andWhere($condition);
 	    }
         }
-        return $queryBuilder->setParameters($this->parameters);
+        return $query->setParameters($this->parameters);
     }
     
     /**
@@ -43,6 +54,9 @@ class QueryBuilder
      */
     public function buildNativeQuery( Form $form, NativeQuery $query )
     {
+	$this->query = $query;
+	//$this->getPlatfornName();
+	
         $group_child = $this->groupChild( $form );
 	
 	$sql = $query->getSQL();
@@ -107,15 +121,20 @@ class QueryBuilder
             {
 		if(in_array($child->get('condition_operator')->getData(),array('IS NULL','IS NOT NULL')))
 		{
-                    $condition .= sprintf('%s ( %s.%s %s ',
+                    $condition .= sprintf('%s (%s.%s %s ',
                         $or_and,
 			$alias,
                         $field,
                         $child->get('condition_operator')->getData()
 		    );
-		    $child->get('condition_operator')->getData() == 'IS NULL' ?
-		    $condition .= sprintf("OR %s.%s = '' ) ",$alias,$field) :
-		    $condition .= sprintf("AND %s.%s <> '' ) ",$alias,$field);
+		    
+		    if( $child->getConfig()->getType()->getName() != 'zk2_admin_panel_date_filter' )
+		    {
+		        $child->get('condition_operator')->getData() == 'IS NULL' ?
+		        $condition .= sprintf("OR %s.%s = '' ",$alias,$field) :
+		        $condition .= sprintf("AND %s.%s <> '' ",$alias,$field);
+		    }
+		    $condition .= ')';
 		}
 		elseif($child->get('condition_operator')->getData() == 'TRUE_FALSE')
 		{
