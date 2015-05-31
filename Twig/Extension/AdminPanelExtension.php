@@ -14,16 +14,17 @@ use Symfony\Component\HttpFoundation\Session\Session;
  */
 class AdminPanelExtension extends Twig_Extension
 {
-    protected $session;
+    protected $session,$convert_time_with_timezone;
     
     /**
      * Constructor
      *
      * @param Session   $session    The session
      */
-    function __construct(Session $session)
+    function __construct(Session $session, $convert_time_with_timezone)
     {
         $this->session = $session;
+        $this->convert_time_with_timezone = $convert_time_with_timezone;
     }
     
     /**
@@ -71,6 +72,8 @@ class AdminPanelExtension extends Twig_Extension
      */
     public function renderConvertDateTime($date, $format, $inputTimezone = null, $outputTimezone = null)
     {
+        if(!$this->convert_time_with_timezone) return $date->format($format);
+        
         if (null === $inputTimezone)
         {
             $inputTimezone = date_default_timezone_get();

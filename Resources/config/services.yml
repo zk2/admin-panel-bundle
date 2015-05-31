@@ -2,7 +2,7 @@ services:
 
     zk2_admin_panel.twig_extension:     
         class:     Zk2\Bundle\AdminPanelBundle\Twig\Extension\AdminPanelExtension
-        arguments: [@session]
+        arguments: [@session,%zk2_admin_panel.convert_time_with_timezone%]
         tags:       
             -  { name: twig.extension }
 

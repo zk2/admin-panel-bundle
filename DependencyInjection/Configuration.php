@@ -33,6 +33,9 @@ class Configuration implements ConfigurationInterface
                 ->booleanNode('check_flag_super_admin')
                     ->defaultFalse()
                 ->end()
+                ->booleanNode('convert_time_with_timezone')
+                    ->defaultTrue()
+                ->end()
             ->end()
         ;
 
