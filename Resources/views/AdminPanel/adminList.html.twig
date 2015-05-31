@@ -55,7 +55,9 @@
         {% if item.getOption('link_id') %}
             {% set lid = item_type == 'object' ? ( attribute(result, (item.getOption('lid') ?: 'id')) ) : result[(item.getOption('lid') ?: 'id')] %}
             {% set click = item.getOption('click') ?: '' %}
-            {% set value = '<a style="text-decoration:underline;" ' ~ click ~ ' href="' ~ path(item.getOption('link_id'), { 'id': lid }) ~ '">' ~ value ~ '</a>' %}
+            {% set link_class = item.getOption('link_class') ?: '' %}
+            {% set link_style = link_class ? '' : ' style="text-decoration:underline;" ' %}
+            {% set value = '<a class="' ~ link_class ~ '"' ~ link_style ~ click ~ ' href="' ~ path(item.getOption('link_id'), { 'id': lid }) ~ '">' ~ value ~ '</a>' %}
         {% endif %}
         
         {% if item.getOption('link_javascript') %}
