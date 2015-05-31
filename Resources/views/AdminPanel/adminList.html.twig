@@ -49,7 +49,8 @@
         {% endif %}
         
         {% if value and item.getOption('icon_path') %}
-            {% set value = '<img src="' ~ ( value matches '{/http/}' ? value : asset(item.getOption('icon_path') ~ value) ) ~ '" width="' ~ item.getOption('icon_width') ~ '" title="Icon" alt="Icon" />' %}
+            {% set icon_path = item.getOption('icon_path') == '.' ? '' : item.getOption('icon_path') %}
+            {% set value = '<img src="' ~ ( value matches '{/http/}' ? value : asset(icon_path ~ value) ) ~ '" width="' ~ item.getOption('icon_width') ~ '" title="Icon" alt="Icon" />' %}
         {% endif %}
         
         {% if item.getOption('link_id') %}
