@@ -21,7 +21,7 @@ class BuilderFormFilterType extends AbstractType
      */
     public function __construct( array $array_fields )
     {
-	foreach( $array_fields as $field )
+	    foreach( $array_fields as $field )
         {
             if( !$field instanceof FilterFieldDescription )
             {
@@ -38,45 +38,45 @@ class BuilderFormFilterType extends AbstractType
     {
         foreach( $this->array_fields as $field )
         {
-	    $type = $field->getType();
-	    $name = $field->getName();
+	        $type = $field->getType();
+	        $name = $field->getName();
 	    
             for( $i = 0; $i < $field->getCount(); $i++ )
             {
-		$zk2_options = array(
+		        $zk2_options = array(
                     'level' => $i,
                     'condition_operator' => $field->getConditionOperator(),
-		    'label' => $field->getLabel(),
-		    'label_attr' => array('class' => 'filter_label'),
-		    'data_index' => $i,
-		    'attr' =>  array('data-index' => $i),
-		    'not_used' => $field->getOption('not_used'),
+		            'label' => $field->getLabel(),
+		            'label_attr' => array('class' => 'filter_label'),
+		            'data_index' => $i,
+		            'attr' =>  array('data-index' => $i),
+		           'not_used' => $field->getOption('not_used'),
                 );
 		
-		if( BaseFilterType::ENTITY_FILTER == $type )
-		{
-		    $zk2_options['entity_type'] = $field->getOption('entity_type');
-	            $zk2_options['entity_class'] = $field->getOption('entity_class');
-	            $zk2_options['property'] = $field->getOption('property');
-		    $zk2_options['em'] = $field->getOption('em');
-		}
-		elseif( BaseFilterType::CHOICE_FILTER == $type )
-		{
-		    $zk2_options['sf_choice'] = $field->getOption('sf_choice');
-		}
-		elseif( BaseFilterType::BOOLEAN_FILTER == $type )
-		{
-		    $zk2_options['revert'] = $field->getOption('revert');
-		}
-		elseif( BaseFilterType::DATE_FILTER == $type and ($tz = $field->getOption('use_timezone')) )
-		{
-		    $zk2_options['use_timezone'] =  $tz;
-		}
+		        if( BaseFilterType::ENTITY_FILTER == $type or BaseFilterType::ENTITY_FILTER_LIGHT == $type )
+		        {
+		            $zk2_options['entity_type'] = $field->getOption('entity_type');
+	                $zk2_options['entity_class'] = $field->getOption('entity_class');
+	                $zk2_options['property'] = $field->getOption('property');
+		            $zk2_options['em'] = $field->getOption('em');
+		        }
+		        elseif( BaseFilterType::CHOICE_FILTER == $type or BaseFilterType::CHOICE_FILTER_LIGHT == $type )
+		        {
+		            $zk2_options['sf_choice'] = $field->getOption('sf_choice');
+		        }
+		        elseif( BaseFilterType::BOOLEAN_FILTER == $type or BaseFilterType::BOOLEAN_FILTER_LIGHT == $type )
+		        {
+		            $zk2_options['revert'] = $field->getOption('revert');
+		        }
+		        elseif( BaseFilterType::DATE_FILTER == $type and ($tz = $field->getOption('use_timezone')) )
+		        {
+		            $zk2_options['use_timezone'] =  $tz;
+		        }
 		
-		if( $qb = $field->getOption('sf_query_builder') )
-		{
-		    $zk2_options['sf_query_builder'] = $qb;
-		}
+		        if( $qb = $field->getOption('sf_query_builder') )
+		        {
+		            $zk2_options['sf_query_builder'] = $qb;
+		        }
 		
                 $builder->add(
                     $name.$i,

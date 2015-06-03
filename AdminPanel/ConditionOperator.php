@@ -53,7 +53,7 @@ class ConditionOperator
                 'x%s'         => '<>',
                 '%s%%'        => 'LIKE%',
                 '%%%s'        => '%LIKE',
-		'x%%%s%%'     => 'NOT %LIKE%',
+		        'x%%%s%%'     => 'NOT %LIKE%',
                 'x%s%%'       => 'NOT LIKE%',
                 'x%%%s'       => 'NOT %LIKE',
                 'IS NULL'     => 'IS EMPTY',
@@ -65,7 +65,7 @@ class ConditionOperator
                 'x%s'         => '<>',
                 '%s%%'        => 'LIKE%',
                 '%%%s'        => '%LIKE',
-		'x%%%s%%'     => 'NOT %LIKE%',
+		        'x%%%s%%'     => 'NOT %LIKE%',
                 'x%s%%'       => 'NOT LIKE%',
                 'x%%%s'       => 'NOT %LIKE',
 	    );
@@ -83,20 +83,20 @@ class ConditionOperator
 	    case self::FULL_INT: return array(
                 '%s'          => '=',
                 'x%s'         => '<>',
-		'xx%s'        => '>',
-		'xxx%s'       => '<',
-		'xxxx%s'      => '>=',
-		'xxxxx%s'     => '<=',
+		        'xx%s'        => '>',
+		        'xxx%s'       => '<',
+		        'xxxx%s'      => '>=',
+		        'xxxxx%s'     => '<=',
                 'IS NULL'     => 'IS EMPTY',
                 'IS NOT NULL' => 'IS NOT EMPTY',
 	    );
 	    case self::MEDIUM_INT: return array(
                 '%s'          => '=',
                 'x%s'         => '<>',
-		'xxxx%s'      => '>=',
-		'xx%s'        => '>',
-		'xxxxx%s'     => '<=',
-		'xxx%s'       => '<',
+		        'xxxx%s'      => '>=',
+		        'xx%s'        => '>',
+		        'xxxxx%s'     => '<=',
+		        'xxx%s'       => '<',
 	    );
 	    case self::SMAL_INT: return array(
                 '%s'          => '=',
@@ -114,24 +114,24 @@ class ConditionOperator
                 'TRUE_FALSE'  => '=',
 	    );
 	    case self::DATE_FROM: return array(
-		'xxxx%s'      => '>=',
-		'xx%s'        => '>',
-		'xxxxx%s'     => '<=',
-		'xxx%s'       => '<',
+		        'xxxx%s'      => '>=',
+		        'xx%s'        => '>',
+		        'xxxxx%s'     => '<=',
+		        'xxx%s'       => '<',
                 '%s'          => '=',
                 'x%s'         => '<>',
 	    );
 	    case self::DATE_TO: return array(
-		'xxxxx%s'     => '<=',
-		'xxx%s'       => '<',
-		'xxxx%s'      => '>=',
-		'xx%s'        => '>',
+		        'xxxxx%s'     => '<=',
+		        'xxx%s'       => '<',
+		        'xxxx%s'      => '>=',
+		        'xx%s'        => '>',
                 '%s'          => '=',
                 'x%s'         => '<>',
 	    );
 	    case self::MIN_MAX: return array(
-		'xx%s'        => '>',
-		'xxxxx%s'     => '<=',
+		        'xx%s'        => '>',
+		        'xxxxx%s'     => '<=',
 	    );
 	}
         return array();

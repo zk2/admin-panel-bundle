@@ -46,4 +46,25 @@ services:
 
     zk2_admin_panel.form_filter_session:
         class:        Zk2\Bundle\AdminPanelBundle\AdminPanel\FormFilterSession
-        arguments:    [@doctrine,@session]     
+        arguments:    [@doctrine,@session]
+    
+    #light
+    zk2_admin_panel.form.type.text_filter_light:     
+        class:  Zk2\Bundle\AdminPanelBundle\AdminPanel\Form\Type\TextFilterLightType
+        tags:
+            - { name: form.type, alias: zk2_admin_panel_text_filter_light }
+
+    zk2_admin_panel.form.type.boolean_filter_light:     
+        class:  Zk2\Bundle\AdminPanelBundle\AdminPanel\Form\Type\BooleanFilterLightType
+        tags:
+            - { name: form.type, alias: zk2_admin_panel_boolean_filter_light }
+
+    zk2_admin_panel.form.type.entity_filter_light:     
+        class:  Zk2\Bundle\AdminPanelBundle\AdminPanel\Form\Type\EntityFilterLightType
+        tags:
+            - { name: form.type, alias: zk2_admin_panel_entity_filter_light }
+
+    zk2_admin_panel.form.type.choice_filter_light:     
+        class:  Zk2\Bundle\AdminPanelBundle\AdminPanel\Form\Type\ChoiceFilterLightType
+        tags:
+            - { name: form.type, alias: zk2_admin_panel_choice_filter_light }
