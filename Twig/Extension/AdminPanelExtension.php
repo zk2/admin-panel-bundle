@@ -72,7 +72,7 @@ class AdminPanelExtension extends Twig_Extension
      */
     public function renderConvertDateTime($date, $format, $inputTimezone = null, $outputTimezone = null)
     {
-        if(!$this->convert_time_with_timezone) return $date->format($format);
+        if(!$this->convert_time_with_timezone) return ($date instanceof \DateTime) ? $date->format($format) : null;
         
         if (null === $inputTimezone)
         {
