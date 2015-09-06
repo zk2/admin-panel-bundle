@@ -1,3 +1,4 @@
+# Deprecate!!! see [SPSBundle][3]
 #AdminPanelBundle
 Lots of applications are required to display tabular list of entities that have to be pagination,
 also it would be nice to have the ability to sort through all fields and flexible filtering.
@@ -529,3 +530,4 @@ Well, very simple template
 
 [1]:  http://admin-panel.zeka.guru/
 [2]:  http://bootstrap.braincrafted.com/getting-started.html#configuration
+[3]:  https://github.com/zk2/SPSBundle
